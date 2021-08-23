@@ -1,4 +1,4 @@
-# Xdebug (Example of Readme File)
+# Xdebug (VBA Immediate Window in Output VSCode Window)
     
 ## Description
  - This package provides a way to simulate VBA Immediate Window in Output VSCode window
@@ -7,7 +7,7 @@
  ## Methods
 
  <p>
-<img src="https://github.com/aeraphe/xdebug/raw/master/images/immediate.gif" alt="VBA immediate Window">
+<img src="https://github.com/aeraphe/xdebug/images/immediate.gif" alt="VBA immediate Window">
 </p>
 
 
@@ -29,6 +29,8 @@ Public Sub index()
   test(1) = "Test Xdebug Output"
   
   Xdebug.printx test
+
+End Sub
 
 ```
 
