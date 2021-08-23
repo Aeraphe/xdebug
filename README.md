@@ -7,7 +7,7 @@
  ## Methods
 
  <p>
-<img src="https://github.com/aeraphe/xdebug/images/immediate.gif" alt="VBA immediate Window">
+<img src="https://github.com/Aeraphe/xdebug/blob/main/images/immediate.gif" alt="VBA immediate Window">
 </p>
 
 
