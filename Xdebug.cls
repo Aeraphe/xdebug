@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 
 'namespace=xvba_modules\Xdebug
 
-
+Public env As String
 
 'Example of Package Create by XVBA-CLI
 
@@ -46,14 +46,18 @@ Public errorTitle As String
 
 
 Private Sub class_initialize()
+  
   Dim fso  As Object
   Set fso = CreateObject("Scripting.FileSystemObject")
   OS_TMP__FOLDER_PATH = fso.GetSpecialFolder(2)
   IMMEDIATE_FOLDER = "xvba_immediate"
   IMMEDIATE_FILE = "immediate.txt"
 
+  
   errorSource = ""
-  errorTitle = "*New Error Was Found *"
+  errorTitle = "XVBA: New Error Was Found"
+
+  env = "DEV"
 
   DEBUG_FILE_PATH = OS_TMP__FOLDER_PATH & "\" & IMMEDIATE_FOLDER & "\" &  IMMEDIATE_FILE
  
@@ -64,23 +68,26 @@ End Sub
 
 Public Function printx(inputValue As Variant,Optional messageType  As Integer = 1)
   
-
-  Dim messageText  As String
+  if(env="DEV") Then
+    Dim messageText  As String
   
-  messageText = createOutputMessage(inputValue)
+    messageText = createOutputMessage(inputValue)
 
-  Call writeDebugFileContent(messageText,messageType)
-    
+    Call writeDebugFileContent(messageText,messageType)
+  End If
 End Function
 
 
 Public  Function printError()
-  Dim message As String
+  if(env="DEV") Then
+
+    Dim message As String
  
-  message = ErrorHanddler()
+    message = ErrorHanddler()
 
-  Call writeDebugFileContent(message,0)
+    Call writeDebugFileContent(message,0)
 
+  End If
 End Function
 
 
@@ -193,6 +200,7 @@ End Function
 Private  Function ErrorHanddler() As String
   Dim errorDescription As String
   Dim numberDescription As String
+  Dim lineError As String
   Dim sourceError As String
   Dim errorTitleMsg As String
   Dim errorSourceMsg As String
@@ -203,14 +211,15 @@ Private  Function ErrorHanddler() As String
 
   Select Case Err.Number
     Case 11 
-    numberDescription = vbCrLf  & MESSAGE_SPACE & "Err.Number: " & Err.Number 
-    errorDescription =  vbCrLf & MESSAGE_SPACE & "Err.Description: " & Err.Description 
+    numberDescription = vbCrLf  & MESSAGE_SPACE & "Error Number: " & Err.Number 
+    lineError = vbCrLf  & MESSAGE_SPACE & "Error Line: " & Erl
+    errorDescription =  vbCrLf & MESSAGE_SPACE & "Error Description: " & Err.Description 
     Case Else 
-    numberDescription = vbCrLf  & MESSAGE_SPACE & "Err.Number: " & Err.Number 
-    errorDescription =  vbCrLf & MESSAGE_SPACE & "Err.Description: " & Err.Description
+    numberDescription = vbCrLf  & MESSAGE_SPACE & "Error Number: " & Err.Number 
+    errorDescription =  vbCrLf & MESSAGE_SPACE & "Error Description: " & Err.Description
   End Select
   
 
-  ErrorHanddler = errorTitleMsg & errorSourceMsg & numberDescription & errorDescription
+  ErrorHanddler = errorTitleMsg & lineError & errorSourceMsg & numberDescription & errorDescription
 
 End Function
