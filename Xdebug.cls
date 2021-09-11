@@ -10,9 +10,11 @@ Attribute VB_Exposed = False
 
 'namespace=xvba_modules\Xdebug
 
+'Flag for debug check if the app is in Dev Or Build
 Public env As String
 
-'Example of Package Create by XVBA-CLI
+'Count off Debug printed
+Private printDebugCount As Integer
 
 Private OS_TMP__FOLDER_PATH As String
 
@@ -56,13 +58,10 @@ Private Sub class_initialize()
    OS_TMP__FOLDER_PATH = fso.GetSpecialFolder(2)
    IMMEDIATE_FOLDER = "xvba_immediate"
    IMMEDIATE_FILE = "immediate.txt"
-
    vbaDebugPrintActive = True
    errorSource = ""
-
-
+   printDebugCount = 0
    errorTitle = "XVBA: New Error Was Found"
-
    env = "DEV"
 
    DEBUG_FILE_PATH = OS_TMP__FOLDER_PATH & "\" & IMMEDIATE_FOLDER & "\" &  IMMEDIATE_FILE
@@ -106,10 +105,22 @@ End Function
 '*/
 Public  Function printErrorAndRaise()
    if(env="DEV") Then
-      errorTitle = "XVBA: New Error Was Found (and Raised)"
-      Dim message As String
 
+
+      Dim oldErrorTitle As String
+
+      'Get last Error Title
+      oldErrorTitle = errorTitle
+
+      'Create New Error Title
+      errorTitle = "XVBA: New Error Was Found  >>> Raised <<<"
+
+      'Get Error Message
+      Dim message As String
       message = ErrorHanddler()
+
+      'Reset the Error Title to the oldest
+      errorTitle = oldErrorTitle
 
       Call writeDebugFileContent(message,0)
       Err.Raise Err.Number
@@ -134,8 +145,9 @@ Private Function writeDebugFileContent(messageText,messageType)
    filePath = DEBUG_FILE_PATH
 
    FileNum = FreeFile
+   printDebugCount = printDebugCount + 1
 
-   PREFIX = Now & " - "
+   PREFIX = "(" & printDebugCount & ") " & Now & " - "
 
    Open filePath For Append As #FileNum
 
