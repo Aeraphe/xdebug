@@ -56,3 +56,41 @@ End Sub
  End Sub
 ```
 
+
+ ### Xdebug.printErrorAndRaise
+
+- This method is use for print error and raise the error to the "parent" function/sub/method
+- Just used for "children"  function/sub/method
+
+
+```
+ Public Sub index()
+  
+  On Error GoTo ErrorHandle:
+
+  'Children Function Call that will throw an Error and Raise to the Sub
+  Call errorSimulation
+
+  
+ ErrorHandle:
+    Xdebug.errorSource = "pageConsoller.index"
+    Xdebug.printError
+
+ End Sub
+
+
+'Throw an Error and Raise the his parent
+ Public Function errorSimulation()
+  
+  On Error GoTo ErrorHandle:
+    'throw an error
+    d = 1/0  
+  
+ ErrorHandle:
+    Xdebug.errorSource = "pageConsoller.errorSimulation"
+    Xdebug.printErrorAndRaise
+
+ End Function
+
+
+```
