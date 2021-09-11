@@ -253,6 +253,7 @@ Private  Function ErrorHanddler() As String
       errorDescription =  vbCrLf & MESSAGE_SPACE & "Error Description: " & Err.Description
     Case Else
       numberDescription = vbCrLf  & MESSAGE_SPACE & "Error Number: " & Err.Number
+      lineError = vbCrLf  & MESSAGE_SPACE & "Error Line: " & Erl
       errorDescription =  vbCrLf & MESSAGE_SPACE & "Error Description: " & Err.Description
    End Select
 
